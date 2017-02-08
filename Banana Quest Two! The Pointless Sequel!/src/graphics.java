@@ -30,9 +30,12 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
 	private BufferedImage banana2;
 	private BufferedImage worldMap;
 	private BufferedImage PC;
-	private 	boolean titleScreen, levelOne, WorldMap;
+	private BufferedImage House;
+	private 	boolean titleScreen, levelOne, WorldMap, Home;
 	int wmx = 0;
 	int wmy = 0;
+	int hx = 800;
+	int hy = -120;
 
     public void setChange(boolean change) {
         this.change = change;
@@ -45,6 +48,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		banana2 = ImageIO.read(this.getClass().getResource("Banana2.png"));
     		worldMap = ImageIO.read(this.getClass().getResource("worldMap.png"));
     		PC = ImageIO.read(this.getClass().getResource("PC.png"));
+    		House = ImageIO.read(this.getClass().getResource("House.png"));
     	}catch(Exception e){
     		
     	}
@@ -55,6 +59,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
        titleScreen = true;
        levelOne = false;
        WorldMap = false;
+       Home = false;
         loadImages();
         setChange(true);
         current = new Point(35,70);
@@ -84,40 +89,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         int Key;
         Key = e.getKeyCode();
 
-
         
-//         if(Key == KeyEvent.VK_UP){ // UP
-//            if(myRect.getY()>(31)) {
-//                myRect.setLocation((int) myRect.getX(), (int) myRect.getY() - 5);
-//            }
-//            else {
-//                myRect.setLocation((int) myRect.getX(), 30);
-//            }
-//        }
-//        else if(Key == KeyEvent.VK_LEFT){
-//            if(myRect.getX()>10) {
-//                myRect.setLocation((int) myRect.getX() - 5, (int) myRect.getY());
-//            }
-//            else {
-//                myRect.setLocation(10, (int) myRect.getY());
-//            }
-//        }
-//        else if(Key == KeyEvent.VK_DOWN){ // DOWN
-//            if(myRect.getY()<(int)(950-myRect.getHeight()-10)) {
-//                myRect.setLocation((int) myRect.getX(), (int) myRect.getY() + 5);
-//            }
-//            else {
-//                myRect.setLocation((int) myRect.getX(), (int)(950-myRect.getHeight()-10));
-//            }
-//        }
-//        else if(Key == KeyEvent.VK_RIGHT){
-//            if(myRect.getX()<(int)(600-myRect.getWidth()-10)) {
-//                myRect.setLocation((int) myRect.getX() + 5, (int) myRect.getY());
-//            }
-//            else {
-//                myRect.setLocation((int)(600-myRect.getWidth()-10), (int) myRect.getY());
-//            }
-//        }
         
         if(Key == KeyEvent.VK_SPACE){
         	if(titleScreen == true){
@@ -137,10 +109,27 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		wmx -= 10;
     		WorldMap = false;
     		WorldMap = true;
-    		System.out.print(wmx);
-    		System.out.print(", ");
-    		System.out.print(wmy);
-    		System.out.println();
+    		
+    		if(wmy >= -100 && wmy <= 470 && wmx <= -170 && wmx >= -540)
+            {
+    			Home = true;
+    			WorldMap = false;
+            }
+    		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
+            {
+            	System.out.println("K226.");
+            }
+    		else if(wmy >= 40 && wmx >= 550)
+            {
+            	System.out.println("City.");
+            }
+    		else
+    		{
+    			System.out.print(wmx);
+            	System.out.print(", ");
+            	System.out.print(wmy);
+            	System.out.println();
+    		}
     	}
         
         if(WorldMap == true && Key == KeyEvent.VK_LEFT && wmx <= 930)
@@ -148,10 +137,27 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		wmx += 10;
     		WorldMap = false;
     		WorldMap = true;
-    		System.out.print(wmx);
-    		System.out.print(", ");
-    		System.out.print(wmy);
-    		System.out.println();
+    		
+    		if(wmy >= -100 && wmy <= 470 && wmx <= -170 && wmx >= -540)
+            {
+    			Home = true;
+    			WorldMap = false;
+            }
+    		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
+            {
+            	System.out.println("K226.");
+            }
+    		else if(wmy >= 40 && wmx >= 550)
+            {
+            	System.out.println("City.");
+            }
+    		else
+    		{
+    			System.out.print(wmx);
+            	System.out.print(", ");
+            	System.out.print(wmy);
+            	System.out.println();
+    		}
     	}
         
         if(WorldMap == true && Key == KeyEvent.VK_UP  && wmy <= 460)
@@ -159,10 +165,27 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		wmy += 10;
     		WorldMap = false;
     		WorldMap = true;
-    		System.out.print(wmx);
-    		System.out.print(", ");
-    		System.out.print(wmy);
-    		System.out.println();
+
+    		if(wmy >= -100 && wmy <= 470 && wmx <= -170 && wmx >= -540)
+            {
+    			Home = true;
+    			WorldMap = false;
+            }
+    		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
+            {
+            	System.out.println("K226.");
+            }
+    		else if(wmy >= 40 && wmx >= 550)
+            {
+            	System.out.println("City.");
+            }
+    		else
+    		{
+    			System.out.print(wmx);
+            	System.out.print(", ");
+            	System.out.print(wmy);
+            	System.out.println();
+    		}
     	}
         
         if(WorldMap == true && Key == KeyEvent.VK_DOWN && wmy >= -190)
@@ -170,10 +193,84 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		wmy -= 10;
     		WorldMap = false;
     		WorldMap = true;
-    		System.out.print(wmx);
-    		System.out.print(", ");
-    		System.out.print(wmy);
-    		System.out.println();
+
+    		if(wmy >= -100 && wmy <= 470 && wmx <= -170 && wmx >= -540)
+            {
+            	Home = true;
+            	WorldMap = false;
+            }
+    		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
+            {
+            	System.out.println("K226.");
+            }
+    		else if(wmy >= 40 && wmx >= 550)
+            {
+            	System.out.println("City.");
+            }
+    		else
+    		{
+    			System.out.print(wmx);
+            	System.out.print(", ");
+            	System.out.print(wmy);
+            	System.out.println();
+    		}
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_RIGHT && hx > 330)
+    	{
+    		hx -= 10;
+    		Home = false;
+    		Home = true;
+    		
+    		System.out.print(hx);
+        	System.out.print(", ");
+        	System.out.print(hy);
+        	System.out.println();
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_LEFT  && hx < 640 && hy > 160 ||Home == true && Key == KeyEvent.VK_LEFT  && hx < 860 && hy < 160)
+    	{
+    		hx += 10;
+    		Home = false;
+    		Home = true;
+    		
+    		System.out.print(hx);
+        	System.out.print(", ");
+        	System.out.print(hy);
+        	System.out.println();
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_DOWN && hy > -120)
+    	{
+    		hy -= 10;
+    		Home = false;
+    		Home = true;
+    		
+    		System.out.print(hx);
+        	System.out.print(", ");
+        	System.out.print(hy);
+        	System.out.println();
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_DOWN && hy <= -120)
+    	{
+        	Home = false;
+        	WorldMap = true;
+        	
+        	wmx = -360;
+        	wmy = -110;
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_UP && hx < 640 && hy < 310 || Home == true && Key == KeyEvent.VK_UP && hx > 640 && hy < 160)
+    	{
+    		hy += 10;
+    		Home = false;
+    		Home = true;
+    		
+    		System.out.print(hx);
+        	System.out.print(", ");
+        	System.out.print(hy);
+        	System.out.println();
     	}
     }
 
@@ -311,6 +408,13 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     	g2d.drawImage(PC, 900, 450, null);
     }
     
+    private void Home(Graphics2D g2d)
+    {
+    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+    	g2d.drawImage(House, hx, hy, null);
+    	g2d.drawImage(PC, 900, 450, null);
+    }
+    
     
     private void draw() {
 
@@ -328,6 +432,10 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         else if(WorldMap)
         {
         	WorldMap(g2d);
+        }
+        if (Home)
+        {
+        	Home(g2d);
         }
         
         if(isRunning)
