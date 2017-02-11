@@ -8,9 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Scanner;
 
-/**
- * Created by Taylor Hudson on 1/5/2017.
- */
+
 class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     public final String TITLE = "Banana Quest Two: The Pointless Sequel!";
     public final Dimension SIZE = new Dimension(1920, 1040);
