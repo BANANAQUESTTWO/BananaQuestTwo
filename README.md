@@ -1,1 +1,1 @@
-Currently, in the game, you can move about freely in the overworld, and your home. collision detection is there, albeit fairly minimal.
+You can roam free in the overworld, Planato City, and your home. Talking to your mom initiates the game's current first and only line of dialogue.
