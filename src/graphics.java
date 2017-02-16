@@ -8,7 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Scanner;
 
-
+/**
+ * Created by Taylor Hudson on 1/5/2017.
+ */
 class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     public final String TITLE = "Banana Quest Two: The Pointless Sequel!";
     public final Dimension SIZE = new Dimension(1920, 1040);
@@ -16,24 +18,24 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     private boolean isRunning, isDone;
     private Image imgBuffer;
     private BufferedImage banana;
-    private TexturePaint stoneOcta, grassOcta, dirty;
     private boolean change;
     @SuppressWarnings("unused")
     private Color BROWN;
     @SuppressWarnings("unused")
     private boolean AITurn, UserTurn;
-    private Rectangle myRect;
-    private Point current;
 	private BufferedImage banana1;
 	private BufferedImage banana2;
 	private BufferedImage worldMap;
 	private BufferedImage PC;
 	private BufferedImage House;
-	private 	boolean titleScreen, levelOne, WorldMap, Home;
+	private BufferedImage Planato;
+	private 	boolean titleScreen, levelOne, WorldMap, Home, BCity, K226, Dialogue1;
 	int wmx = 0;
 	int wmy = 0;
 	int hx = 800;
 	int hy = -120;
+	int bcx = -220;
+	int bcy = -190;
 
     public void setChange(boolean change) {
         this.change = change;
@@ -47,6 +49,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		worldMap = ImageIO.read(this.getClass().getResource("worldMap.png"));
     		PC = ImageIO.read(this.getClass().getResource("PC.png"));
     		House = ImageIO.read(this.getClass().getResource("House.png"));
+    		Planato = ImageIO.read(this.getClass().getResource("Planato.png"));
     	}catch(Exception e){
     		
     	}
@@ -58,11 +61,10 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
        levelOne = false;
        WorldMap = false;
        Home = false;
+       BCity = false;
+       K226 = false;
+       Dialogue1 = false;
         loadImages();
-        setChange(true);
-        current = new Point(35,70);
-        myRect = new Rectangle((int)current.getX(), (int)current.getY(), 23, 80); // x,y,h,w to move just change x and y
-        BROWN = new Color(139,69,19);
         frame = new JFrame();
         frame.addKeyListener(this);
         frame.addWindowListener(this);
@@ -119,7 +121,8 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
-            	System.out.println("City.");
+    			BCity = true;
+    			WorldMap = false;
             }
     		else
     		{
@@ -147,7 +150,11 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
-            	System.out.println("City.");
+    			bcx = -850;
+    			bcy = 170;
+    			
+    			BCity = true;
+    			WorldMap = false;
             }
     		else
     		{
@@ -175,7 +182,11 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
-            	System.out.println("City.");
+    			bcx = -220;
+    			bcy = -210;
+    			
+    			BCity = true;
+    			WorldMap = false;
             }
     		else
     		{
@@ -203,7 +214,8 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
-            	System.out.println("City.");
+    			BCity = true;
+    			WorldMap = false;
             }
     		else
     		{
@@ -214,7 +226,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		}
     	}
         
-        if(Home == true && Key == KeyEvent.VK_RIGHT)
+        if(Home == true && Key == KeyEvent.VK_RIGHT && hx > 330)
     	{
     		hx -= 10;
     		Home = false;
@@ -226,7 +238,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         	System.out.println();
     	}
         
-        if(Home == true && Key == KeyEvent.VK_LEFT)
+        if(Home == true && Key == KeyEvent.VK_LEFT  && hx < 640 && hy > 160 ||Home == true && Key == KeyEvent.VK_LEFT  && hx < 860 && hy < 160)
     	{
     		hx += 10;
     		Home = false;
@@ -238,7 +250,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         	System.out.println();
     	}
         
-        if(Home == true && Key == KeyEvent.VK_DOWN)
+        if(Home == true && Key == KeyEvent.VK_DOWN && hy > -120)
     	{
     		hy -= 10;
     		Home = false;
@@ -250,7 +262,16 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         	System.out.println();
     	}
         
-        if(Home == true && Key == KeyEvent.VK_UP)
+        if(Home == true && Key == KeyEvent.VK_DOWN && hy <= -120)
+    	{
+        	Home = false;
+        	WorldMap = true;
+        	
+        	wmx = -360;
+        	wmy = -110;
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_UP && hx < 640 && hy < 310 || Home == true && Key == KeyEvent.VK_UP && hx > 640 && hy < 160)
     	{
     		hy += 10;
     		Home = false;
@@ -261,6 +282,108 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         	System.out.print(hy);
         	System.out.println();
     	}
+        
+        if(Home == true && Key == KeyEvent.VK_UP && hy > -60 && hx > 400 && hx < 540)
+    	{
+    		hy -= 20;
+    		
+    		Dialogue1 = true;
+    		Home = false;
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_DOWN && hy > -60 && hx > 400 && hx < 540)
+    	{
+    		hy += 20;
+    		
+    		Dialogue1 = true;
+    		Home = false;
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_RIGHT && hy > -60 && hx > 400 && hx < 540)
+    	{
+    		hx += 20;
+    		
+    		Dialogue1 = true;
+    		Home = false;
+    	}
+        
+        if(Home == true && Key == KeyEvent.VK_LEFT && hy > -60 && hx > 400 && hx < 540)
+    	{
+    		hx -= 20;
+    		
+    		Dialogue1 = true;
+    		Home = false;
+    	}
+        
+        if(Key == KeyEvent.VK_SPACE && Dialogue1 == true)
+        {
+        	Dialogue1 = false;
+        	Home = true;
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_UP && bcy < 470)
+        {
+        	bcy += 10;
+        	BCity = false;
+        	BCity = true;
+        	
+        	System.out.print(bcx);
+        	System.out.print(", ");
+        	System.out.print(bcy);
+        	System.out.println();
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_DOWN)
+        {
+        	bcy -= 10;
+        	BCity = false;
+        	BCity = true;
+        	
+        	System.out.print(bcx);
+        	System.out.print(", ");
+        	System.out.print(bcy);
+        	System.out.println();
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_DOWN && bcy <= -210)
+        {
+        	wmx = 710;
+        	wmy = 30;
+        	BCity = false;
+        	WorldMap = true;
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_RIGHT)
+        {
+        	bcx -= 10;
+        	BCity = false;
+        	BCity = true;
+        	
+        	System.out.print(bcx);
+        	System.out.print(", ");
+        	System.out.print(bcy);
+        	System.out.println();
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_RIGHT && bcx <= -850)
+        {
+        	wmx = 540;
+        	wmy = 180;
+        	BCity = false;
+        	WorldMap = true;
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_LEFT && bcx < 940)
+        {
+        	bcx += 10;
+        	BCity = false;
+        	BCity = true;
+        	
+        	System.out.print(bcx);
+        	System.out.print(", ");
+        	System.out.print(bcy);
+        	System.out.println();
+        }
     }
 
     @Override
@@ -404,6 +527,26 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     	g2d.drawImage(PC, 900, 450, null);
     }
     
+    private void Dialogue1(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+    	g2d.drawImage(banana1, 1400, 250, null);
+    	g2d.drawImage(banana2, 250, 250, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setColor(Color.YELLOW);
+    	g2d.drawString("Your mom:", 450, 300);
+    	g2d.drawString("\"All young children need to go on dangerous adventeurs to save the world!", 450, 325);
+    	g2d.drawString("It said so on TV!", 450, 350);
+    	g2d.drawString("Well then, off you go now!\"", 450, 375);
+    }
+    
+    private void Planato(Graphics2D g2d)
+    {
+    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+    	g2d.drawImage(Planato, bcx, bcy, null);
+    	g2d.drawImage(PC, 900, 450, null);
+    }
+    
     
     private void draw() {
 
@@ -422,9 +565,17 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         {
         	WorldMap(g2d);
         }
-        if (Home)
+        else if (Home)
         {
         	Home(g2d);
+        }
+        else if (Dialogue1)
+        {
+        	Dialogue1(g2d);
+        }
+        else if (BCity)
+        {
+        	Planato(g2d);
         }
         
         if(isRunning)
