@@ -20,22 +20,24 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     private BufferedImage banana;
     private boolean change;
     @SuppressWarnings("unused")
-    private Color BROWN;
-    @SuppressWarnings("unused")
-    private boolean AITurn, UserTurn;
+        private boolean AITurn, UserTurn;
 	private BufferedImage banana1;
 	private BufferedImage banana2;
 	private BufferedImage worldMap;
 	private BufferedImage PC;
 	private BufferedImage House;
-	private BufferedImage Planato;
-	private 	boolean titleScreen, levelOne, WorldMap, Home, BCity, K226, Dialogue1;
+	private BufferedImage Plantano;
+	private BufferedImage fourthwall;
+	private BufferedImage K2261;
+	private 	boolean titleScreen, levelOne, WorldMap, Home, BCity, K226A1, Dialogue1, Dialogue2, Dialogue3, Dialogue4;
 	int wmx = 0;
 	int wmy = 0;
 	int hx = 800;
 	int hy = -120;
 	int bcx = -220;
 	int bcy = -190;
+	int ka1x = 860;
+	int ka1y = 460;
 
     public void setChange(boolean change) {
         this.change = change;
@@ -49,7 +51,9 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     		worldMap = ImageIO.read(this.getClass().getResource("worldMap.png"));
     		PC = ImageIO.read(this.getClass().getResource("PC.png"));
     		House = ImageIO.read(this.getClass().getResource("House.png"));
-    		Planato = ImageIO.read(this.getClass().getResource("Planato.png"));
+    		Plantano = ImageIO.read(this.getClass().getResource("Plantano.png"));
+    		fourthwall = ImageIO.read(this.getClass().getResource("4thwall.jpg"));
+    		K2261 = ImageIO.read(this.getClass().getResource("K226A1.png"));
     	}catch(Exception e){
     		
     	}
@@ -62,8 +66,11 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
        WorldMap = false;
        Home = false;
        BCity = false;
-       K226 = false;
+       K226A1 = false;
        Dialogue1 = false;
+       Dialogue2 = false;
+       Dialogue3 = false;
+       Dialogue4 = false;
         loadImages();
         frame = new JFrame();
         frame.addKeyListener(this);
@@ -117,7 +124,8 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
             {
-            	System.out.println("K226.");
+    			K226A1 = true;
+    			WorldMap = false;
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
@@ -146,7 +154,8 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
             {
-            	System.out.println("K226.");
+    			K226A1 = true;
+    			WorldMap = false;
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
@@ -178,7 +187,8 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
             {
-            	System.out.println("K226.");
+    			K226A1 = true;
+    			WorldMap = false;
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
@@ -210,7 +220,8 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
             }
     		else if(wmy >= 380 && wmy <= 470 && wmx >= 50 && wmx <= 380)
             {
-            	System.out.println("K226.");
+    			K226A1 = true;
+    			WorldMap = false;
             }
     		else if(wmy >= 40 && wmx >= 550)
             {
@@ -384,6 +395,126 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         	System.out.print(bcy);
         	System.out.println();
         }
+        
+        if(BCity == true && Key == KeyEvent.VK_DOWN && bcy < 40 && bcx < -430 && bcx > -620)
+    	{
+    		bcy += 20;
+    		
+    		Dialogue2 = true;
+    		BCity = false;
+    	}
+        
+        if(BCity == true && Key == KeyEvent.VK_RIGHT && bcy < 40 && bcx < -430 && bcx > -620)
+    	{
+    		bcx += 20;
+    		
+    		Dialogue2 = true;
+    		BCity = false;
+    	}
+        
+        if(BCity == true && Key == KeyEvent.VK_LEFT && bcy < 40 && bcx < -430 && bcx > -620)
+    	{
+    		bcx -= 20;
+    		
+    		Dialogue2 = true;
+    		BCity = false;
+    	}
+        
+        if(Key == KeyEvent.VK_SPACE && Dialogue2 == true)
+        {
+        	Dialogue2 = false;
+        	BCity = true;
+        }
+        
+        if(BCity == true && Key == KeyEvent.VK_DOWN && bcy < 130 && bcx < 540 && bcx > 430)
+    	{
+    		bcy += 20;
+    		
+    		Dialogue3 = true;
+    		BCity = false;
+    	}
+        
+        if(BCity == true && Key == KeyEvent.VK_RIGHT && bcy < 130 && bcx < 540 && bcx > 430)
+    	{
+    		bcx += 20;
+    		
+    		Dialogue3 = true;
+    		BCity = false;
+    	}
+        
+        if(BCity == true && Key == KeyEvent.VK_LEFT && bcy < 130 && bcx < 540 && bcx > 430)
+    	{
+    		bcx -= 20;
+    		
+    		Dialogue3 = true;
+    		BCity = false;
+    	}
+        
+        if(Key == KeyEvent.VK_SPACE && Dialogue3 == true)
+        {
+        	Dialogue3 = false;
+        	Dialogue4 = true;
+        	try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        }
+        
+        if(Key == KeyEvent.VK_SPACE && Dialogue4 == true)
+        {
+        	Dialogue4 = false;
+        	BCity = true;
+        }
+        
+        if(K226A1 == true && Key == KeyEvent.VK_RIGHT)
+        {
+        	ka1x -= 10;
+        	K226A1 = false;
+        	K226A1 = true;
+        	
+        	System.out.print(ka1x);
+        	System.out.print(", ");
+        	System.out.print(ka1y);
+        	System.out.println();
+        }
+        
+        if(K226A1 == true && Key == KeyEvent.VK_LEFT)
+        {
+        	ka1x += 10;
+        	K226A1 = false;
+        	K226A1 = true;
+        	
+        	System.out.print(ka1x);
+        	System.out.print(", ");
+        	System.out.print(ka1y);
+        	System.out.println();
+        }
+        
+        if(K226A1 == true && Key == KeyEvent.VK_DOWN)
+        {
+        	ka1y -= 10;
+        	K226A1 = false;
+        	K226A1 = true;
+        	
+        	System.out.print(ka1x);
+        	System.out.print(", ");
+        	System.out.print(ka1y);
+        	System.out.println();
+        }
+        
+        if(K226A1 == true && Key == KeyEvent.VK_UP)
+        {
+        	ka1y += 10;
+        	K226A1 = false;
+        	K226A1 = true;
+        	
+        	System.out.print(ka1x);
+        	System.out.print(", ");
+        	System.out.print(ka1y);
+        	System.out.println();
+        }
     }
 
     @Override
@@ -490,7 +621,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     	g2d.drawString("Banana Quest Two", 450, 400);
     	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * .5F));
     	g2d.drawString("The Pointless Sequel!", 650, 500);
-    	g2d.drawImage(banana1, 1400, 250, null);
+    	g2d.drawImage(banana1, 1300, 250, null);
     	g2d.drawImage(banana2, 250, 250, null);
     	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
     	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * .1F));
@@ -500,7 +631,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     private void levelOne(Graphics2D g2d){
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
-    	g2d.drawImage(banana1, 1400, 250, null);
+    	g2d.drawImage(banana1, 1300, 250, null);
     	g2d.drawImage(banana2, 250, 250, null);
     	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
     	g2d.setColor(Color.YELLOW);
@@ -515,6 +646,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     
     private void WorldMap(Graphics2D g2d)
     {
+    	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(worldMap, wmx, wmy, null);
     	g2d.drawImage(PC, 900, 450, null);
@@ -522,6 +654,7 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     
     private void Home(Graphics2D g2d)
     {
+    	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(House, hx, hy, null);
     	g2d.drawImage(PC, 900, 450, null);
@@ -529,25 +662,70 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
     
     private void Dialogue1(Graphics2D g2d){
     	g2d.setColor(Color.BLACK);
-    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
-    	g2d.drawImage(banana1, 1400, 250, null);
-    	g2d.drawImage(banana2, 250, 250, null);
+    	g2d.fillRect(350, 700, 1200, 250);
+    	g2d.drawImage(banana1, 1300, 600, null);
+    	g2d.drawImage(banana2, 250, 600, null);
     	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
     	g2d.setColor(Color.YELLOW);
-    	g2d.drawString("Your mom:", 450, 300);
-    	g2d.drawString("\"All young children need to go on dangerous adventeurs to save the world!", 450, 325);
-    	g2d.drawString("It said so on TV!", 450, 350);
-    	g2d.drawString("Well then, off you go now!\"", 450, 375);
+    	g2d.drawString("Your mom:", 450, 750);
+    	g2d.drawString("\"All young children need to go on dangerous adventeurs to save the world!", 450, 775);
+    	g2d.drawString("It said so on TV!", 450, 800);
+    	g2d.drawString("Well then, off you go now!\"", 450, 825);
     }
     
-    private void Planato(Graphics2D g2d)
+    private void Plantano(Graphics2D g2d)
     {
+    	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
-    	g2d.drawImage(Planato, bcx, bcy, null);
+    	g2d.drawImage(Plantano, bcx, bcy, null);
     	g2d.drawImage(PC, 900, 450, null);
     }
     
+    private void Dialogue2(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(350, 700, 1200, 250);
+    	g2d.drawImage(banana1, 1300, 600, null);
+    	g2d.drawImage(banana2, 250, 600, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setColor(Color.YELLOW);
+    	g2d.drawString("Fat Guy:", 450, 750);
+    	g2d.drawString("\"Technology is incredible!\"", 450, 775);
+    }
     
+    private void Dialogue3(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(350, 700, 1200, 250);
+    	g2d.drawImage(banana1, 1300, 600, null);
+    	g2d.drawImage(banana2, 250, 600, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setColor(Color.YELLOW);
+    	g2d.drawString("Beard Guy:", 450, 750);
+    	g2d.drawString("\"Gee! This guy'd better hope bad dialogue doesn't count against his grade!\"", 450, 775);
+    	g2d.drawString("\"Otherwise, I'm pretty sure this project's earned a zero!\"", 450, 800);
+    	g2d.drawString("\"LOL!\"", 450, 825);
+    }
+    
+    private void Dialogue4(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(350, 700, 1200, 250);
+    	g2d.drawImage(fourthwall, 600, 200, null);
+    	g2d.drawImage(banana1, 1300, 600, null);
+    	g2d.drawImage(banana2, 250, 600, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setColor(Color.YELLOW);
+    	g2d.drawString("Brett:", 450, 750);
+    	g2d.drawString("\"Aaaand... there goes the fourth wall.\"", 450, 775);
+    	g2d.drawString("\"Thanks a lot!\"", 450, 800);
+    }
+    	
+    	private void K226A1(Graphics2D g2d){
+        	g2d.setColor(Color.BLACK);
+        	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+        	g2d.drawImage(K2261, ka1x, ka1y, null);
+        	g2d.drawImage(PC, 900, 450, null);
+    }
+    
+    	//Here you go Mr. Hudson, a comment.
     private void draw() {
 
         // TODO Auto-generated method stub
@@ -575,7 +753,23 @@ class graphics implements Runnable, KeyListener, WindowListener, MouseListener {
         }
         else if (BCity)
         {
-        	Planato(g2d);
+        	Plantano(g2d);
+        }
+        else if (Dialogue2)
+        {
+        	Dialogue2(g2d);
+        }
+        else if (Dialogue3)
+        {
+        	Dialogue3(g2d);
+        }
+        else if (Dialogue4)
+        {
+        	Dialogue4(g2d);
+        }
+        else if (K226A1)
+        {
+        	K226A1(g2d);
         }
         
         if(isRunning)
