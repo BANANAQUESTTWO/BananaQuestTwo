@@ -12,19 +12,26 @@ class graphics implements Runnable, KeyListener, WindowListener {
     private Image imgBuffer;
     private boolean change;
     @SuppressWarnings("unused")
-    private boolean AITurn, UserTurn;
+    private boolean AITurn = false;
+    private boolean UserTurn = true;
     String direction = "Down";
     int W = 1;
     
     //User Stats:
-    private int UserHp = 1000;
+    private int UserHp = 5000;
     private int UserMp = 100;
+    private String HP = Integer.toString(UserHp);
+    private String MP = Integer.toString(UserMp);
+    private String playerMove = "";
+    private String effectiveness = "";
     
     //Enemy Variables:
     private int EnemyHp = 10000;
-    private int EnemyFireWeakness = 2;
-    private int EnemyIceWeakness = 2;
-    private int EnemyThunderWeakness = 2;
+    private String EHP = Integer.toString(EnemyHp);
+    private boolean fire = false;
+    private boolean ice = false;
+    private boolean thunder = false;
+    private boolean attack = false;
     /*Enemy Weakness Key:
      0 = Ineffective
      1 = Resistant
@@ -37,9 +44,11 @@ class graphics implements Runnable, KeyListener, WindowListener {
 	private BufferedImage banana2;
 	private BufferedImage worldMap;
 	private BufferedImage PCUp;
-	private BufferedImage PCUpW;
+	private BufferedImage PCUpW1;
+	private BufferedImage PCUpW2;
 	private BufferedImage PCDown;
-	private BufferedImage PCDownW;
+	private BufferedImage PCDownW1;
+	private BufferedImage PCDownW2;
 	private BufferedImage PCLeft;
 	private BufferedImage PCLeftW;
 	private BufferedImage PCRight;
@@ -52,9 +61,12 @@ class graphics implements Runnable, KeyListener, WindowListener {
 	private BufferedImage DownArrow;
 	private BufferedImage LeftArrow;
 	private BufferedImage RightArrow;
+	private BufferedImage Fire;
+	private BufferedImage Ice;
+	private BufferedImage Thunder;
 	
 	//Location Booleans:
-	private boolean titleScreen, levelOne, WorldMap, Home, BCity, 
+	private boolean titleScreen, levelOne, WorldMap, Home, BCity, GameOver,
 	K226A, K226A1, K226A2, K226A3, K226A4, K226A5, K226A6, K226A7,
 	Dialogue1, Dialogue2, Dialogue3, Dialogue4, Dialogue5;
 	
@@ -79,9 +91,11 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		banana2 = ImageIO.read(this.getClass().getResource("Banana2.png"));
     		worldMap = ImageIO.read(this.getClass().getResource("worldMap.png"));
     		PCUp = ImageIO.read(this.getClass().getResource("PC Up.png"));
-    		PCUpW = ImageIO.read(this.getClass().getResource("PC UpW.png"));
+    		PCUpW1 = ImageIO.read(this.getClass().getResource("PC UpW1.png"));
+    		PCUpW2 = ImageIO.read(this.getClass().getResource("PC UpW2.png"));
     		PCDown = ImageIO.read(this.getClass().getResource("PC Down.png"));
-    		PCDownW = ImageIO.read(this.getClass().getResource("PC DownW.png"));
+    		PCDownW1 = ImageIO.read(this.getClass().getResource("PC DownW1.png"));
+    		PCDownW2 = ImageIO.read(this.getClass().getResource("PC DownW2.png"));
     		PCLeft = ImageIO.read(this.getClass().getResource("PC Left.png"));
     		PCLeftW = ImageIO.read(this.getClass().getResource("PC LeftW.png"));
     		PCRight = ImageIO.read(this.getClass().getResource("PC Right.png"));
@@ -94,6 +108,9 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		DownArrow = ImageIO.read(this.getClass().getResourceAsStream("Down arrow.png"));
     		LeftArrow = ImageIO.read(this.getClass().getResourceAsStream("Left arrow.png"));
     		RightArrow = ImageIO.read(this.getClass().getResourceAsStream("Right arrow.png"));
+    		Fire = ImageIO.read(this.getClass().getResourceAsStream("Fire.png"));
+    		Ice = ImageIO.read(this.getClass().getResourceAsStream("Ice.png"));
+    		Thunder = ImageIO.read(this.getClass().getResourceAsStream("Thunder.png"));
     	}catch(Exception e){
     		
     	}
@@ -117,6 +134,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
        Dialogue3 = false;
        Dialogue4 = false;
        Dialogue5 = false;
+       GameOver = false;
         loadImages();
         frame = new JFrame();
         frame.addKeyListener(this);
@@ -188,7 +206,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
             	System.out.println();
             	direction = "Right";
             	W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -230,7 +248,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
             	System.out.println();
             	direction = "Left";
             	W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -272,7 +290,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
             	System.out.println();
             	direction = "Up";
             	W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -311,7 +329,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
             	System.out.println();
             	direction = "Down";
             	W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -330,7 +348,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Right";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -348,7 +366,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Left";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -366,7 +384,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Down";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -393,7 +411,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Up";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -407,7 +425,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		Home = false;
     		direction = "Up";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -421,7 +439,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		Home = false;
     		direction = "Down";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -435,7 +453,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		Home = false;
     		direction = "Right";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -449,7 +467,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		Home = false;
     		direction = "Left";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -473,7 +491,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Up";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -491,7 +509,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Down";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -517,7 +535,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Right";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -543,7 +561,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	System.out.println();
         	direction = "Left";
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -557,7 +575,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		BCity = false;
     		direction = "Down";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -571,7 +589,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		BCity = false;
     		direction = "Right";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -585,7 +603,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		BCity = false;
     		direction = "Left";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -605,7 +623,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		BCity = false;
     		direction = "Down";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -619,7 +637,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		BCity = false;
     		direction = "Right";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -633,7 +651,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     		BCity = false;
     		direction = "Left";
     		W += 1;
-    		if (W > 10)
+    		if (W > 20)
         	{
         		W = 1;
         	}
@@ -706,7 +724,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	K226A = false;
         	ka1x -= 10;
         	W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -722,7 +740,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	{
         		ka1x -= 10;
         		W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -741,7 +759,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	{
         		ka1y -= 10;
         		W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -760,7 +778,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	{
         		ka1x -= 10;
         		W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -779,7 +797,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	{
         		ka1y -= 10;
         		W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -805,7 +823,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	   	K226A = false;
        		ka1y -= 10;
        		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -822,7 +840,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
        		{
        			ka1y -= 10;
        			W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -869,7 +887,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	{
     		ka1y += 10;
     		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -888,7 +906,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	{
     		ka1x += 10;
     		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -907,7 +925,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	{
     		ka1y += 10;
     		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -924,7 +942,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
        	
        	ka1x += 20;
        	W += 1;
-    	if (W > 10)
+    	if (W > 20)
     	{
     		W = 1;
     	}
@@ -939,7 +957,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
        	{
        		ka1x += 10;
        		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -974,7 +992,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
    	   		K226A = false;
       		ka1y += 10;
       		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -990,7 +1008,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
       		{
       			ka1y += 10;
       			W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -1021,7 +1039,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
       			direction = "Down";
       			ka1y -= 10;
       			W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -1055,7 +1073,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
    		 	direction = "Right";
    		 	ka1x -= 10;
 			W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1074,7 +1092,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
    	   		direction = "Down";
    	   			ka1y -= 10;
       			W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -1093,7 +1111,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
    		 	direction = "Left";
    		 	ka1x += 10;
 			W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1122,7 +1140,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
       			direction = "Up";
       			ka1y += 10;
       			W += 1;
-            	if (W > 10)
+            	if (W > 20)
             	{
             		W = 1;
             	}
@@ -1145,11 +1163,12 @@ class graphics implements Runnable, KeyListener, WindowListener {
    	   	K226A4 = false;
    	   	K226A = false;
       	
+   	   	direction = "Right";
    	 for(int i=1; i < 82; i++)
 		{
 			ka1x -= 10;
 			W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1163,11 +1182,12 @@ class graphics implements Runnable, KeyListener, WindowListener {
 			}
 		}
    	 
+   	direction = "Up";
    	for(int i=1; i < 76; i++)
 		{
 			ka1y += 10;
 			W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1181,11 +1201,12 @@ class graphics implements Runnable, KeyListener, WindowListener {
 			}
 		}
    	   	
+   	direction = "Left";
    	 	for(int i=1; i < 82; i++)
 		{
 			ka1x += 10;
 			W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1199,6 +1220,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
 			}
 		}	
    	   	
+   	 	direction = "Down";
       	K226A = false;
       	K226A3 = true;
        }
@@ -1208,12 +1230,13 @@ class graphics implements Runnable, KeyListener, WindowListener {
        {
        	K226A2 = false;
        	K226A = false;
+       	direction = "Right";
        	
        	for(int i=1; i < 50; i++)
     	{
     		ka1x -= 10;
     		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1238,12 +1261,13 @@ class graphics implements Runnable, KeyListener, WindowListener {
        {
        	K226A5 = false;
        	K226A = false;
+       	direction = "Left";
        	
        	for(int i=1; i < 50; i++)
     	{
     		ka1x += 10;
     		W += 1;
-        	if (W > 10)
+        	if (W > 20)
         	{
         		W = 1;
         	}
@@ -1262,6 +1286,282 @@ class graphics implements Runnable, KeyListener, WindowListener {
        	K226A = false;
        	K226A2 = true;
        	System.out.println("K226A2");
+       }
+       
+       if(K226A5 == true && Key == KeyEvent.VK_UP)
+       {
+       	K226A5 = false;
+       	K226A = false;
+       	direction = "Up";
+       	
+       	for(int i=1; i < 85; i++)
+    	{
+    		ka1y += 10;
+    		W += 1;
+        	if (W > 20)
+        	{
+        		W = 1;
+        	}
+        	K226A = false;
+        	K226A = true;
+        	try {
+				Thread.sleep(38);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+       	direction = "Right";
+       	
+       	for(int i=1; i < 58; i++)
+    	{
+    		ka1x -= 10;
+    		W += 1;
+        	if (W > 20)
+        	{
+        		W = 1;
+        	}
+        	K226A = false;
+        	K226A = true;
+        	try {
+				Thread.sleep(38);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+       	
+       	Key = KeyEvent.VK_DOWN;
+       	direction = "Up";
+       	K226A5 = false;
+       	K226A = false;
+       	K226A7 = true;
+       	System.out.println("K226A7");
+       }
+       
+       if(K226A5 == true && Key == KeyEvent.VK_RIGHT)
+       {
+    	   K226A5 = false;
+    	   K226A = false;
+    	   direction = "Right";
+    	   
+    	   for(int i=1; i < 40; i++)
+       		{
+       			ka1x -= 10;
+       			W += 1;
+       			if (W > 20)
+       			{
+       				W = 1;
+       			}
+       			K226A = false;
+       			K226A = true;
+       			try {
+       				Thread.sleep(38);
+       			} catch (InterruptedException e1) {
+       				// TODO Auto-generated catch block
+       				e1.printStackTrace();
+       			}
+       		}
+    	   direction = "Down";
+    	   
+    	   
+    	   for(int i=1; i < 98; i++)
+      		{
+      			ka1y -= 10;
+      			W += 1;
+      			if (W > 20)
+      			{
+      				W = 1;
+      			}
+      			K226A = false;
+      			K226A = true;
+      			try {
+      				Thread.sleep(38);
+      			} catch (InterruptedException e1) {
+      				// TODO Auto-generated catch block
+      				e1.printStackTrace();
+      			}
+      		}
+    	   direction = "Left";
+    	   
+    	   
+    	   for(int i=1; i < 130; i++)
+     		{
+     			ka1x += 10;
+     			W += 1;
+     			if (W > 20)
+     			{
+     				W = 1;
+     			}
+     			K226A = false;
+     			K226A = true;
+     			try {
+     				Thread.sleep(38);
+     			} catch (InterruptedException e1) {
+     				// TODO Auto-generated catch block
+     				e1.printStackTrace();
+     			}
+     		}
+    	   direction = "Down";
+    	   
+    	   
+    	   for(int i=1; i < 45; i++)
+    		{
+    			ka1y -= 10;
+    			W += 1;
+    			if (W > 20)
+    			{
+    				W = 1;
+    			}
+    			K226A = false;
+    			K226A = true;
+    			try {
+    				Thread.sleep(38);
+    			} catch (InterruptedException e1) {
+    				// TODO Auto-generated catch block
+    				e1.printStackTrace();
+    			}
+    		}
+    	   
+    	   K226A = false;
+    	   K226A6 = true;
+       }
+       
+       if(K226A7 == true && Key == KeyEvent.VK_1 && UserHp > 0)
+       {
+    	   UserTurn = false;
+    	   attack = true;
+    	   AITurn = true;
+		   K226A7 = false;
+		   K226A7 = true;
+		   try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   UserHp -= 200;
+		   EnemyHp -= 500;
+		   HP = Integer.toString(UserHp);
+		   MP = Integer.toString(UserMp);
+		   EHP = Integer.toString(EnemyHp);
+		   attack = false;
+		   K226A7 = false;
+		   AITurn = false;
+		   UserTurn = true;
+ 		   K226A7 = true;
+       }
+       
+       if(K226A7 == true && Key == KeyEvent.VK_2 && UserMp > 0 && UserHp > 0)
+       {
+    	   UserTurn = false;
+    	   playerMove = "Fire";
+    	   effectiveness = "It's super effective!";
+    	   fire = true;
+    	   AITurn = true;
+		   K226A7 = false;
+		   K226A7 = true;
+		   try {
+				Thread.sleep(300);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   fire = false;
+		   try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   UserHp -= 200;
+		   EnemyHp -= 2000;
+		   UserMp -= 20;
+		   HP = Integer.toString(UserHp);
+		   MP = Integer.toString(UserMp);
+		   EHP = Integer.toString(EnemyHp);
+		   playerMove = "";
+    	   effectiveness = "";
+		   K226A7 = false;
+		   AITurn = false;
+		   UserTurn = true;
+ 		   K226A7 = true;
+       }
+       
+       if(K226A7 == true && Key == KeyEvent.VK_3 && UserMp > 0 && UserHp > 0)
+       {
+    	   UserTurn = false;
+    	   playerMove = "Ice";
+    	   effectiveness = "It's not very effective!";
+    	   ice = true;
+    	   AITurn = true;
+		   K226A7 = false;
+		   K226A7 = true;
+		   try {
+				Thread.sleep(300);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   ice = false;
+		   try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   UserHp -= 200;
+		   EnemyHp -= 250;
+		   UserMp -= 20;
+		   HP = Integer.toString(UserHp);
+		   MP = Integer.toString(UserMp);
+		   EHP = Integer.toString(EnemyHp);
+		   playerMove = "";
+    	   effectiveness = "";
+		   K226A7 = false;
+		   AITurn = false;
+		   UserTurn = true;
+ 		   K226A7 = true;
+       }
+       
+       if(K226A7 == true && Key == KeyEvent.VK_4 && UserMp > 0 && UserHp > 0)
+       {
+    	   UserTurn = false;
+    	   playerMove = "Thunder";
+    	   thunder = true;
+    	   AITurn = true;
+		   K226A7 = false;
+		   K226A7 = true;
+		   try {
+				Thread.sleep(300);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   thunder = false;
+		   try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   UserHp -= 200;
+		   EnemyHp -= 1000;
+		   UserMp -= 20;
+		   HP = Integer.toString(UserHp);
+		   MP = Integer.toString(UserMp);
+		   EHP = Integer.toString(EnemyHp);
+		   playerMove = "";
+    	   effectiveness = "";
+		   K226A7 = false;
+		   AITurn = false;
+		   UserTurn = true;
+ 		   K226A7 = true;
+       }
+       
+       if(UserHp <= 0)
+       {
+    	   GameOver = true;
        }
        
     }
@@ -1373,35 +1673,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(worldMap, wmx, wmy, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1412,35 +1720,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(House, hx, hy, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1464,35 +1780,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(Plantano, bcx, bcy, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1550,35 +1874,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(K226, ka1x, ka1y, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1588,35 +1920,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
         	g2d.setColor(Color.BLACK);
         	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
         	g2d.drawImage(K226, ka1x, ka1y, null);
-        	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+        	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
         	{
         		g2d.drawImage(PCUp, 900, 450, null);
         	}
-        	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+        	if (direction == "Up" && W >= 6 && W <= 10)
         	{
-        		g2d.drawImage(PCUpW, 900, 450, null);
+        		g2d.drawImage(PCUpW1, 900, 450, null);
         	}
-        	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+        	if (direction == "Up" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCUpW2, 900, 450, null);
+        	}
+        	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
         	{
         		g2d.drawImage(PCDown, 900, 450, null);
         	}
-        	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+        	if (direction == "Down" && W >= 6 && W <= 10)
         	{
-        		g2d.drawImage(PCDownW, 900, 450, null);
+        		g2d.drawImage(PCDownW1, 900, 450, null);
         	}
-        	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+        	if (direction == "Down" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCDownW2, 900, 450, null);
+        	}
+        	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
         	{
         		g2d.drawImage(PCLeft, 900, 450, null);
         	}
-        	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+        	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
         	{
         		g2d.drawImage(PCLeftW, 900, 450, null);
         	}
-        	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+        	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
         	{
         		g2d.drawImage(PCRight, 900, 450, null);
         	}
-        	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+        	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
         	{
         		g2d.drawImage(PCRightW, 900, 450, null);
         	}
@@ -1638,35 +1978,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(K226, ka1x, ka1y, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1683,35 +2031,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(K226, ka1x, ka1y, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1729,35 +2085,43 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.BLACK);
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(K226, ka1x, ka1y, null);
-    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCUp, 900, 450, null);
     	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
+    	if (direction == "Up" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
+    		g2d.drawImage(PCUpW1, 900, 450, null);
     	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Up" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCUpW2, 900, 450, null);
+    	}
+    	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCDown, 900, 450, null);
     	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
+    	if (direction == "Down" && W >= 6 && W <= 10)
     	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
+    		g2d.drawImage(PCDownW1, 900, 450, null);
     	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Down" && W >= 16 && W <= 20)
+    	{
+    		g2d.drawImage(PCDownW2, 900, 450, null);
+    	}
+    	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
     	{
     		g2d.drawImage(PCLeft, 900, 450, null);
     	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
+    	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCLeftW, 900, 450, null);
     	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
+    	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
     	{
     		g2d.drawImage(PCRight, 900, 450, null);
     	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
+    	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
     	{
     		g2d.drawImage(PCRightW, 900, 450, null);
     	}
@@ -1776,37 +2140,46 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
     	g2d.drawImage(K226, ka1x, ka1y, null);
     	if (direction == "Up" && W != 4 && W != 5 && W != 6)
-    	{
-    		g2d.drawImage(PCUp, 900, 450, null);
-    	}
-    	if (direction == "Up" && W == 4 || direction == "Up" && W == 5 || direction == "Up" && W == 6)
-    	{
-    		g2d.drawImage(PCUpW, 900, 450, null);
-    	}
-    	if (direction == "Down" && W != 4 && W != 5 && W != 6)
-    	{
-    		g2d.drawImage(PCDown, 900, 450, null);
-    	}
-    	if (direction == "Down" && W == 4 || direction == "Down" && W == 5 || direction == "Down" && W == 6)
-    	{
-    		g2d.drawImage(PCDownW, 900, 450, null);
-    	}
-    	if (direction == "Left" && W != 4 && W != 5 && W != 6)
-    	{
-    		g2d.drawImage(PCLeft, 900, 450, null);
-    	}
-    	if (direction == "Left" && W == 4 || direction == "Left" && W == 5 || direction == "Left" && W == 6)
-    	{
-    		g2d.drawImage(PCLeftW, 900, 450, null);
-    	}
-    	if (direction == "Right" && W != 4 && W != 5 && W != 6)
-    	{
-    		g2d.drawImage(PCRight, 900, 450, null);
-    	}
-    	if (direction == "Right" && W == 4 || direction == "Right" && W == 5 || direction == "Right" && W == 6)
-    	{
-    		g2d.drawImage(PCRightW, 900, 450, null);
-    	}
+    		if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
+        	{
+        		g2d.drawImage(PCUp, 900, 450, null);
+        	}
+        	if (direction == "Up" && W >= 6 && W <= 10)
+        	{
+        		g2d.drawImage(PCUpW1, 900, 450, null);
+        	}
+        	if (direction == "Up" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCUpW2, 900, 450, null);
+        	}
+        	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
+        	{
+        		g2d.drawImage(PCDown, 900, 450, null);
+        	}
+        	if (direction == "Down" && W >= 6 && W <= 10)
+        	{
+        		g2d.drawImage(PCDownW1, 900, 450, null);
+        	}
+        	if (direction == "Down" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCDownW2, 900, 450, null);
+        	}
+        	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
+        	{
+        		g2d.drawImage(PCLeft, 900, 450, null);
+        	}
+        	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCLeftW, 900, 450, null);
+        	}
+        	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
+        	{
+        		g2d.drawImage(PCRight, 900, 450, null);
+        	}
+        	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCRightW, 900, 450, null);
+        	}
     	g2d.drawImage(RightArrow, 1000, 520, null);
     	g2d.drawImage(UpArrow, 945, 375, null);
     	g2d.drawImage(LeftArrow, 855, 520, null);
@@ -1817,6 +2190,121 @@ class graphics implements Runnable, KeyListener, WindowListener {
     	g2d.setColor(Color.YELLOW);
     	g2d.drawString("Which way will you go?", 450, 150);
 }
+    
+    private void K226A6(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+    	g2d.drawImage(K226, ka1x, ka1y, null);
+    	if (direction == "Up" && W != 4 && W != 5 && W != 6)
+    		if (direction == "Up" && W <= 5 || direction == "Up" && W >= 11 && W <= 15)
+        	{
+        		g2d.drawImage(PCUp, 900, 450, null);
+        	}
+        	if (direction == "Up" && W >= 6 && W <= 10)
+        	{
+        		g2d.drawImage(PCUpW1, 900, 450, null);
+        	}
+        	if (direction == "Up" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCUpW2, 900, 450, null);
+        	}
+        	if (direction == "Down" && W <= 5 || direction == "Down" && W >= 11 && W <= 15)
+        	{
+        		g2d.drawImage(PCDown, 900, 450, null);
+        	}
+        	if (direction == "Down" && W >= 6 && W <= 10)
+        	{
+        		g2d.drawImage(PCDownW1, 900, 450, null);
+        	}
+        	if (direction == "Down" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCDownW2, 900, 450, null);
+        	}
+        	if (direction == "Left" && W <= 5 || direction == "Left" && W >= 11 && W <= 15)
+        	{
+        		g2d.drawImage(PCLeft, 900, 450, null);
+        	}
+        	if (direction == "Left" && W >= 6 && W <= 10 || direction == "Left" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCLeftW, 900, 450, null);
+        	}
+        	if (direction == "Right" && W <= 5 || direction == "Right" && W >= 11 && W<= 15)
+        	{
+        		g2d.drawImage(PCRight, 900, 450, null);
+        	}
+        	if (direction == "Right" && W >= 6 && W <= 10 || direction == "Right" && W >= 16 && W <= 20)
+        	{
+        		g2d.drawImage(PCRightW, 900, 450, null);
+        	}
+    	g2d.drawImage(RightArrow, 1000, 520, null);
+    	g2d.drawImage(UpArrow, 945, 375, null);
+    	g2d.drawImage(LeftArrow, 855, 520, null);
+    	g2d.fillRect(350, 100, 1200, 250);
+    	g2d.drawImage(banana1, 1300, 0, null);
+    	g2d.drawImage(banana2, 250, 0, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setColor(Color.YELLOW);
+    	g2d.drawString("Which way will you go?", 450, 150);
+}
+    
+    private void K226A7(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+    	g2d.drawImage(K226, ka1x, ka1y, null);
+    	g2d.drawImage(PCUp, 900, 450, null);
+    	g2d.fillRect(350, 700, 1200, 250);
+    	g2d.drawImage(banana1, 1300, 600, null);
+    	g2d.drawImage(banana2, 250, 600, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setColor(Color.YELLOW);
+    	if (UserTurn == true)
+    	{
+    		g2d.drawString("Wild POINTLESS PACKET appeared!                      HP: " + HP + " MP: " + MP + " Enemy HP: " + EHP, 450, 730);
+    		g2d.drawString("Press 1 to attack.", 450, 780);
+    		g2d.drawString("Press 2 to use Fire.", 450, 830);
+        	g2d.drawString("Press 3 to use Ice.", 450, 880);
+        	g2d.drawString("Press 4 to use Thunder.", 450, 930);
+    	}
+    	if (AITurn == true && attack == false)
+    	{
+    		g2d.drawString("Wild POINTLESS PACKET appeared!                      HP: " + HP + " MP: " + MP + " Enemy HP: " + EHP, 450, 730);
+        	g2d.drawString("You use " + playerMove + "!" + " " + effectiveness, 450, 780);
+        	g2d.drawString("POINTLESS PACKET attacks for 200 damage!", 450, 830);
+    	}
+    	if (AITurn == true && attack == true)
+    	{
+    		g2d.drawString("Wild POINTLESS PACKET appeared!                      HP: " + HP + " MP: " + MP + " Enemy HP: " + EHP, 450, 730);
+        	g2d.drawString("You attack!", 450, 780);
+        	g2d.drawString("POINTLESS PACKET attacks for 200 damage!", 450, 830);
+    	}
+    	if (fire == true)
+    	{
+    		g2d.drawImage(Fire, 900, 250, null);
+    	}
+    	if (ice == true)
+    	{
+    		g2d.drawImage(Ice, 870, 200, null);
+    	}
+    	if (thunder == true)
+    	{
+    		g2d.drawImage(Thunder, 910, 170, null);
+    	}
+}
+    
+    private void GameOver(Graphics2D g2d){
+    	g2d.setColor(Color.BLACK);
+    	g2d.fillRect(0, 0, SIZE.width, SIZE.height);
+    	g2d.setColor(Color.YELLOW);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 10F));
+    	g2d.drawString("Banana Quest Two", 450, 400);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * .5F));
+    	g2d.drawString("The Pointless Sequel!", 650, 500);
+    	g2d.drawImage(banana1, 1300, 250, null);
+    	g2d.drawImage(banana2, 250, 250, null);
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 2F));
+    	g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * .1F));
+    	g2d.drawString("Press Space to begin.", 850, 800);
+    }
     
     	//Here you go Mr. Hudson, a comment.
     private void draw() {
@@ -1887,6 +2375,18 @@ class graphics implements Runnable, KeyListener, WindowListener {
         else if (K226A5)
         {
         	K226A5(g2d);
+        }
+        else if (K226A6)
+        {
+        	K226A6(g2d);
+        }
+        else if (K226A7)
+        {
+        	K226A7(g2d);
+        }
+        else if (GameOver)
+        {
+        	GameOver(g2d);
         }
         
         if(isRunning)
