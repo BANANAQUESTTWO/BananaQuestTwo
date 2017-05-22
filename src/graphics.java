@@ -1975,6 +1975,13 @@ class graphics implements Runnable, KeyListener, WindowListener {
 					}
 				}
 			
+			try {
+				Thread.sleep(16000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			K226A = false;
 			f1 = true;
 			try {
@@ -2590,8 +2597,8 @@ class graphics implements Runnable, KeyListener, WindowListener {
 				g2d.drawImage(PCRightW, 900, 450, null);
 			}
 			g2d.drawImage(LeftArrow, 855, 520, null);
-			g2d.drawImage(RightArrow, 1000, 520, null);
-			g2d.drawImage(DownArrow, 945, 635, null);
+			g2d.drawImage(RightArrow, 1025, 520, null);
+			g2d.drawImage(DownArrow, 955, 635, null);
 			g2d.fillRect(350, 100, 1200, 250);
 			g2d.drawImage(banana1, 1300, 0, null);
 			g2d.drawImage(banana2, 250, 0, null);
@@ -2647,7 +2654,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
 		{
 			g2d.drawImage(PCRightW, 900, 450, null);
 		}
-		g2d.drawImage(RightArrow, 1000, 520, null);
+		g2d.drawImage(RightArrow, 1025, 520, null);
 		g2d.drawImage(UpArrow, 945, 375, null);
 		g2d.fillRect(350, 100, 1200, 250);
 		g2d.drawImage(banana1, 1300, 0, null);
@@ -2700,7 +2707,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
 		{
 			g2d.drawImage(PCRightW, 900, 450, null);
 		}
-		g2d.drawImage(RightArrow, 1000, 520, null);
+		g2d.drawImage(RightArrow, 1025, 520, null);
 		g2d.drawImage(DownArrow, 945, 635, null);
 		g2d.drawImage(UpArrow, 945, 375, null);
 		g2d.fillRect(350, 100, 1200, 250);
@@ -2754,7 +2761,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
 		{
 			g2d.drawImage(PCRightW, 900, 450, null);
 		}
-		g2d.drawImage(RightArrow, 1000, 520, null);
+		g2d.drawImage(RightArrow, 1025, 520, null);
 		g2d.drawImage(UpArrow, 945, 375, null);
 		g2d.fillRect(350, 100, 1200, 250);
 		g2d.drawImage(banana1, 1300, 0, null);
@@ -2808,7 +2815,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
 		{
 				g2d.drawImage(PCRightW, 900, 450, null);
 			}
-		g2d.drawImage(RightArrow, 1000, 520, null);
+		g2d.drawImage(RightArrow, 1025, 520, null);
 		if (pointlessPacket == false)
 		{
 			g2d.drawImage(UpArrow, 945, 375, null);
@@ -2869,7 +2876,7 @@ class graphics implements Runnable, KeyListener, WindowListener {
 		}
 		if (uselessNoPhoneSign == false)
 		{
-			g2d.drawImage(RightArrow, 1000, 520, null);
+			g2d.drawImage(RightArrow, 1025, 520, null);
 		}
 		g2d.drawImage(UpArrow, 945, 375, null);
 		g2d.drawImage(LeftArrow, 855, 520, null);
